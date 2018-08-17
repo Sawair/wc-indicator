@@ -23,7 +23,7 @@ namespace wcindicator.api.Services
                 .First();
         }
 
-        public StatusUpdate GetLastReport()
+        public StatusReport GetLastReport()
         {
             return _db.StatusUpdates
                 .OrderByDescending(s => s.ReportTime)

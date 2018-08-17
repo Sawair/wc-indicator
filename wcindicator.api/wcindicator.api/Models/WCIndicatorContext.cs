@@ -12,6 +12,6 @@ namespace wcindicator.api.Models
             : base(options)
         { }
 
-        public DbSet<StatusUpdate> StatusUpdates { get; set; }
+        public DbSet<StatusReport> StatusUpdates { get; set; }
     }
 }

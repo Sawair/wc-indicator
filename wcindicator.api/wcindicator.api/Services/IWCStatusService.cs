@@ -9,6 +9,6 @@ namespace wcindicator.api.Services
     public interface IWCStatusService
     {
         StatusEnum GetCurrentWCStatus();
-        StatusUpdate GetLastReport();
+        StatusReport GetLastReport();
     }
 }

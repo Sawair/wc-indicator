@@ -2,7 +2,7 @@
 
 namespace wcindicator.api.Models
 {
-    public class StatusUpdate
+    public class StatusReport
     {
         public long Id { get; set; }
         public DateTime ReportTime { get; set; }
