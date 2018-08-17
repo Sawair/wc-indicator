@@ -1,5 +1,6 @@
 from enum import Enum
 from datetime import datetime
+from time import sleep
 
 import requests
 
@@ -29,6 +30,7 @@ class WCStateManager:
         data = {'ChangeDate': self.lastStateChange, 'Status': self.wcState, 'LastStatusDuration': diff}
         result = requests.post(self.reportServer, data=data)
         while result != 200:
+            sleep(2)
             print('Status send failed retrying')
             result = requests.post(self.reportServer, data=data)
         print('Status send successful')
