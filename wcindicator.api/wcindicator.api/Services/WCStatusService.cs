@@ -8,7 +8,7 @@ namespace wcindicator.api.Services
 {
     public class WCStatusService : IWCStatusService
     {
-        private WCIndicatorContext _db { get; }
+        private readonly WCIndicatorContext _db;
 
         public WCStatusService(WCIndicatorContext db)
         {

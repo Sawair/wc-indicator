@@ -5,15 +5,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using wcindicator.api.Models;
+using wcindicator.api.Services;
 
 namespace wcindicator.api.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IWCStatusService _statusService;
+
+        public HomeController(IWCStatusService statusService)
+        {
+            _statusService = statusService;
+        }
+
         public IActionResult Index()
         {
             var vm = new IndexPageViewModel();
-            vm.StatusString = "API W.I.P State";
+            vm.StatusString = _statusService.GetCurrentWCStatus().ToString();
             return View(vm);
         }
 

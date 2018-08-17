@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using wcindicator.api.Models;
+using wcindicator.api.Services;
 
 namespace wcindicator.api
 {
@@ -27,6 +28,8 @@ namespace wcindicator.api
                 .AddDbContext<WCIndicatorContext>(options =>
                             options.UseSqlServer(Configuration.GetConnectionString("WCIndicatorDbContext")))
                 .AddMvc();
+
+            services.AddTransient<IWCStatusService, WCStatusService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

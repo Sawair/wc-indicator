@@ -20,6 +20,23 @@ namespace wcindicator.api.test
         }
 
         [Fact]
+        public void GivenEmptyDatabase_WhenGettingLastReport_ShouldGetTheDefaultOne()
+        {
+            using (var context = CreateInMemoryCoontext())
+            {
+                var oldReport = new StatusReport() { ReportTime = new DateTime(2017, 1, 1) };
+                var newReport = new StatusReport() { ReportTime = new DateTime(2018, 1, 1) };
+                var oldestReport = new StatusReport() { ReportTime = new DateTime(2016, 1, 1) };
+                context.StatusUpdates.AddRange(oldReport, newReport, oldestReport);
+                context.SaveChanges();
+
+                var service = new WCStatusService(context);
+                var currentStatus = service.GetLastReport();
+                currentStatus.Should().Be(newReport);
+            }
+        }
+
+        [Fact]
         public void GivenDatabaseWithTwoRecords_WhenGettingLastReport_ShouldGetTheLatestOne()
         {
             using (var context = CreateInMemoryCoontext())
