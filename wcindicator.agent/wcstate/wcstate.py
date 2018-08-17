@@ -27,12 +27,12 @@ class WCStateManager:
             self.sendState(diff)
 
     def sendState(self, diff):
-        data = {'ChangeDate': self.lastStateChange, 'Status': self.wcState, 'LastStatusDuration': diff}
-        result = requests.post(self.reportServer, data=data)
-        while result != 200:
+        data = {'ChangeDate': self.lastStateChange.isoformat(), 'Status': self.wcState.name, 'LastStatusDuration': diff.seconds}
+        result = requests.post(self.reportServer, json=data)
+        while result.status_code != 200:
             sleep(2)
             print('Status send failed retrying')
-            result = requests.post(self.reportServer, data=data)
+            result = requests.post(self.reportServer, json=data)
         print('Status send successful')
 
 
