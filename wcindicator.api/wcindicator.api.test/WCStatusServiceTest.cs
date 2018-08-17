@@ -24,6 +24,7 @@ namespace wcindicator.api.test
         {
             using (var context = CreateInMemoryCoontext())
             {
+                context.StatusUpdates.RemoveRange(context.StatusUpdates);
                 var oldReport = new StatusReport() { ReportTime = new DateTime(2017, 1, 1) };
                 var newReport = new StatusReport() { ReportTime = new DateTime(2018, 1, 1) };
                 var oldestReport = new StatusReport() { ReportTime = new DateTime(2016, 1, 1) };
@@ -41,6 +42,7 @@ namespace wcindicator.api.test
         {
             using (var context = CreateInMemoryCoontext())
             {
+                context.StatusUpdates.RemoveRange(context.StatusUpdates);
                 var oldReport = new StatusReport() { ReportTime = new DateTime(2017, 1, 1) };
                 var newReport = new StatusReport() { ReportTime = new DateTime(2018, 1, 1) };
                 var oldestReport = new StatusReport() { ReportTime = new DateTime(2016, 1, 1) };
@@ -58,6 +60,7 @@ namespace wcindicator.api.test
         {
             using (var context = CreateInMemoryCoontext())
             {
+                context.StatusUpdates.RemoveRange(context.StatusUpdates);
                 var oldReport = new StatusReport() { ReportTime = new DateTime(2017, 1, 1), Status = StatusEnum.Wait };
                 var newReport = new StatusReport() { ReportTime = new DateTime(2018, 1, 1), Status = StatusEnum.Occupied };
                 var oldestReport = new StatusReport() { ReportTime = new DateTime(2016, 1, 1), Status = StatusEnum.Free };

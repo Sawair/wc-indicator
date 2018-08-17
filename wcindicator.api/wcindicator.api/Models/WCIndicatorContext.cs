@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore;
 
 namespace wcindicator.api.Models
 {
@@ -20,6 +19,10 @@ namespace wcindicator.api.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<StatusReport>()
+                .HasData(
+                new StatusReport() { Id = 1, ReportTime = DateTime.MinValue, Status = StatusEnum.Free }
+                );
         }
     }
 }

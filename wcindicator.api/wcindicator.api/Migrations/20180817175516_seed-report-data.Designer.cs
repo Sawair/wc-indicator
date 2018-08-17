@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using wcindicator.api.Models;
 
 namespace wcindicator.api.Migrations
 {
     [DbContext(typeof(WCIndicatorContext))]
-    partial class WCIndicatorContextModelSnapshot : ModelSnapshot
+    [Migration("20180817175516_seed-report-data")]
+    partial class seedreportdata
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace wcindicator.api.Migrations
                     b.ToTable("StatusUpdates");
 
                     b.HasData(
-                        new { Id = 1L, ReportTime = DateTime.MinValue, Status = 0 }
+                        new { Id = 1L, ReportTime = new DateTime(2018, 8, 17, 19, 55, 16, 79, DateTimeKind.Local), Status = 0 }
                     );
                 });
 #pragma warning restore 612, 618
