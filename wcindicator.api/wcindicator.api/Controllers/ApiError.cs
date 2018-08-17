@@ -11,6 +11,7 @@ namespace wcindicator.api.Controllers
     {
         [HttpPost]
         [Route("/apierror/{code}")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult ErrorPage(int code)
         {
             return Json(new { Error = code });

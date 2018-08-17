@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using wcindicator.api.Models;
 using wcindicator.api.Services;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace wcindicator.api
 {
@@ -30,6 +31,11 @@ namespace wcindicator.api
                 .AddMvc();
 
             services.AddTransient<IWCStatusService, WCStatusService>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "WC API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +60,12 @@ namespace wcindicator.api
             }
 
             app.UseStaticFiles();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "WC API V1");
+            });
 
             app.UseMvc(routes =>
             {
