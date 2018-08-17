@@ -10,5 +10,7 @@ namespace wcindicator.api.Services
     {
         StatusEnum GetCurrentWCStatus();
         StatusReport GetLastReport();
+        void Add(StatusEnum status, DateTime changeDate, TimeSpan statusDuration);
+        int SaveChanges();
     }
 }

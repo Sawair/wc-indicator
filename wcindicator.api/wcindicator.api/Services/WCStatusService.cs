@@ -15,6 +15,18 @@ namespace wcindicator.api.Services
             _db = db;
         }
 
+        public void Add(StatusEnum status, DateTime changeDate, TimeSpan statusDuration)
+        {
+            _db.StatusUpdates.Add(
+                new StatusReport()
+                {
+                    ReportTime = changeDate,
+                    Status = status,
+                    StatusDuration = statusDuration
+                });
+            _db.SaveChanges();
+        }
+
         public StatusEnum GetCurrentWCStatus()
         {
             return _db.StatusUpdates
@@ -28,6 +40,11 @@ namespace wcindicator.api.Services
             return _db.StatusUpdates
                 .OrderByDescending(s => s.ReportTime)
                 .First();
+        }
+
+        public int SaveChanges()
+        {
+            return _db.SaveChanges();
         }
     }
 }
