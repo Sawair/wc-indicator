@@ -8,7 +8,7 @@ using wcindicator.api.Services;
 
 namespace wcindicator.api.Controllers
 {
-    public class StatusController
+    public class StatusController : Controller
     {
         private readonly IWCStatusService _statusService;
 
@@ -29,6 +29,6 @@ namespace wcindicator.api.Controllers
     {
         public StatusEnum Status { get; set; }
         public DateTime ChangeDate { get; set; }
-        public TimeSpan StatusDuration { get; set; }
+        public TimeSpan LastStatusDuration { get; set; }
     }
 }
