@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using wcindicator.api.Models;
 
 namespace wcindicator.api
 {
@@ -21,7 +23,10 @@ namespace wcindicator.api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services
+                .AddDbContext<WCIndicatorContext>(options =>
+                            options.UseSqlServer(Configuration.GetConnectionString("WCIndicatorDbContext")))
+                .AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
