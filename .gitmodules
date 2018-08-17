@@ -1,0 +1,3 @@
+[submodule "wcindicator.agent/gpio"]
+	path = wcindicator.agent/gpio
+	url = https://github.com/duxingkei33/orangepi_PC_gpio_pyH3.git
