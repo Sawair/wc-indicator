@@ -42,7 +42,15 @@ namespace wcindicator.api
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
+                {
+                    appBuilder.UseStatusCodePagesWithReExecute("/apierror/{0}");
+                    appBuilder.UseExceptionHandler("/apierror/500");
+                });
+                app.UseWhen(context => !context.Request.Path.StartsWithSegments("/api"), appBuilder =>
+                {
+                    app.UseExceptionHandler("/Home/Error");
+                });
             }
 
             app.UseStaticFiles();

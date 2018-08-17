@@ -21,7 +21,8 @@ namespace wcindicator.api.Controllers
         [Route("/api/status")]
         public IActionResult UpdateStatus(UpdateStatusPost model)
         {
-            _statusService.Add(model.Status, model.ChangeDate, model.StatusDuration);
+            _statusService.Add(model.Status, model.ChangeDate, model.LastStatusDuration);
+            return Ok();
         }
     }
 
