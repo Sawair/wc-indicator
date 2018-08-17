@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using wcindicator.api.Models;
@@ -11,17 +13,19 @@ namespace wcindicator.api.Controllers
     public class StatusController : Controller
     {
         private readonly IWCStatusService _statusService;
+        private readonly ILogger<StatusController> _logger;
 
-        public StatusController(IWCStatusService statusService)
+        public StatusController(IWCStatusService statusService, ILogger<StatusController> logger)
         {
             _statusService = statusService;
+            _logger = logger;
         }
 
         [HttpPost]
         [Route("/api/status")]
-        public IActionResult UpdateStatus(UpdateStatusPost model)
+        public IActionResult UpdateStatus([FromBody] UpdateStatusPost model)
         {
-            _statusService.Add(model.Status, model.ChangeDate, model.LastStatusDuration);
+            _statusService.Add(model.Status, model.ChangeDate, TimeSpan.FromSeconds(model.LastStatusDuration));
             return Ok();
         }
 
@@ -61,6 +65,6 @@ namespace wcindicator.api.Controllers
     {
         public StatusEnum Status { get; set; }
         public DateTime ChangeDate { get; set; }
-        public TimeSpan LastStatusDuration { get; set; }
+        public long LastStatusDuration { get; set; }
     }
 }

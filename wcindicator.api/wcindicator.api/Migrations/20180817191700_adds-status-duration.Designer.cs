@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using wcindicator.api.Models;
 
 namespace wcindicator.api.Migrations
 {
     [DbContext(typeof(WCIndicatorContext))]
-    partial class WCIndicatorContextModelSnapshot : ModelSnapshot
+    [Migration("20180817191700_adds-status-duration")]
+    partial class addsstatusduration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
