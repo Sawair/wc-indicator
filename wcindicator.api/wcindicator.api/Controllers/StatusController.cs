@@ -24,6 +24,37 @@ namespace wcindicator.api.Controllers
             _statusService.Add(model.Status, model.ChangeDate, model.LastStatusDuration);
             return Ok();
         }
+
+        [HttpGet]
+        [Route("/api/status")]
+        public IActionResult GetLastStatus()
+        {
+            var vm = new StatusViewModel();
+            var report = _statusService.GetLastReport();
+            vm.Status = report.Status;
+            vm.LastChange = report.ReportTime;
+            return Ok(vm);
+        }
+
+        // TODO: move to own controller
+        [HttpGet]
+        [Route("/api/report")]
+        public IActionResult GetLastReport()
+        {
+            return Ok(_statusService.GetLastReport());
+        }
+    }
+
+    public class StatusViewModel
+    {
+        public StatusEnum Status { get; set; }
+
+        public DateTime LastChange { get; set; }
+
+        public string StatusString
+        {
+            get => Enum.GetName(typeof(StatusEnum), Status);
+        }
     }
 
     public class UpdateStatusPost
