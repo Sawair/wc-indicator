@@ -1,6 +1,8 @@
 from enum import Enum
 from datetime import datetime
 
+import requests
+
 
 class WCState(Enum):
     Free = 0
@@ -8,17 +10,27 @@ class WCState(Enum):
 
 
 class WCStateManager:
-    def __init__(self):
+    def __init__(self, reportServer):
         self.wcState = WCState.Free
         self.lastStateChange = datetime.now()
+        self.reportServer = reportServer
 
     def setWCState(self, state):
         if self.wcState == state:
             pass
         else:
-            diff = datetime.now() - self.lastStateChange
+            now = datetime.now()
+            diff = now - self.lastStateChange
+            self.lastStateChange = now
             self.wcState = state
             self.sendState(diff)
 
     def sendState(self, diff):
-        return
+        data = {'ChangeDate': self.lastStateChange, 'Status': self.wcState, 'LastStatusDuration': diff}
+        result = requests.post(self.reportServer, data=data)
+        while result != 200:
+            print('Status send failed retrying')
+            result = requests.post(self.reportServer, data=data)
+        print('Status send successful')
+
+
