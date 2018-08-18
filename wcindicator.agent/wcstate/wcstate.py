@@ -4,6 +4,7 @@ from time import sleep
 
 import requests
 
+# That classes are writen for python 3.6
 
 class WCState(Enum):
     Free = 0
