@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using wcindicator.api.Models;
 using wcindicator.api.Services;
 using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace wcindicator.api
 {
@@ -22,13 +24,21 @@ namespace wcindicator.api
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
             services
                 .AddDbContext<WCIndicatorContext>(options =>
-                            options.UseSqlServer(Configuration.GetConnectionString("WCIndicatorDbContext")))
-                .AddMvc();
+                            options.UseSqlServer(Configuration.GetConnectionString("WCIndicatorDbContext")));
 
             services.AddTransient<IWCStatusService, WCStatusService>();
 
@@ -38,16 +48,15 @@ namespace wcindicator.api
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
             {
+                //app.UseHsts();
                 app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
                 {
                     appBuilder.UseStatusCodePagesWithReExecute("/apierror/{0}");
@@ -59,7 +68,9 @@ namespace wcindicator.api
                 });
             }
 
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
