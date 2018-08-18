@@ -23,14 +23,17 @@ namespace wcindicator.api.Controllers
 
         [HttpPost]
         [Route("/api/status")]
+        [ProducesResponseType(204)]
         public IActionResult UpdateStatus([FromBody] UpdateStatusPost model)
         {
             _statusService.Add(model.Status, model.ChangeDate, TimeSpan.FromSeconds(model.LastStatusDuration));
-            return Ok();
+            return NoContent();
         }
 
         [HttpGet]
         [Route("/api/status")]
+        [ProducesResponseType(200, Type = typeof(StatusViewModel))]
+
         public IActionResult GetLastStatus()
         {
             var vm = new StatusViewModel();
@@ -43,6 +46,8 @@ namespace wcindicator.api.Controllers
         // TODO: move to own controller
         [HttpGet]
         [Route("/api/report")]
+        [ProducesResponseType(200, Type = typeof(StatusReport))]
+
         public IActionResult GetLastReport()
         {
             return Ok(_statusService.GetLastReport());
