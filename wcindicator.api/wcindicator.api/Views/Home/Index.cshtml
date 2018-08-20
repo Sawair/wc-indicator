@@ -2,6 +2,18 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+<style>
+    body{
+        @if(Model.StatusString == "Occupied")
+        {
+            @: background-color:red;
+        }
+        else
+        {
+            @: background-color:green;
+        }
+    }
+</style>
 <div class="row justify-content-md-center">
     <div class="col col-12">
         <h2>Nexpertis WC Indicator</h2>
