@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,6 +29,13 @@ namespace wcindicator.api.Controllers
         public IActionResult UpdateStatus([FromBody] UpdateStatusPost model)
         {
             var createdObj = _statusService.Add(model.Status, model.ChangeDate, TimeSpan.FromSeconds(model.LastStatusDuration));
+
+            var client = new RestClient("https://prod-28.westeurope.logic.azure.com:443/workflows/8dc2d212ad544ee189458624dcbddf96/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_GtQEdrIOrJHEwX73HF-nw4L4LeFsO4WeWmlj16-hDQ");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            request.AddHeader("content-type", "application/json");
+            request.AddParameter("application/json", JsonConvert.SerializeObject(createdObj), ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
             return Created($"/api/status/{createdObj.Id}", createdObj);
         }
 
