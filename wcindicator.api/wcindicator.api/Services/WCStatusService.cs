@@ -15,16 +15,17 @@ namespace wcindicator.api.Services
             _db = db;
         }
 
-        public void Add(StatusEnum status, DateTime changeDate, TimeSpan statusDuration)
+        public StatusReport Add(StatusEnum status, DateTime changeDate, TimeSpan statusDuration)
         {
-            _db.StatusUpdates.Add(
-                new StatusReport()
-                {
-                    ReportTime = changeDate,
-                    Status = status,
-                    StatusDuration = statusDuration
-                });
+            var report = new StatusReport()
+            {
+                ReportTime = changeDate,
+                Status = status,
+                StatusDuration = statusDuration
+            };
+            _db.StatusUpdates.Add(report);
             _db.SaveChanges();
+            return report;
         }
 
         public StatusEnum GetCurrentWCStatus()

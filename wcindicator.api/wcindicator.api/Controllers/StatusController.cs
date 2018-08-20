@@ -23,11 +23,11 @@ namespace wcindicator.api.Controllers
 
         [HttpPost]
         [Route("/api/status")]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(201)]
         public IActionResult UpdateStatus([FromBody] UpdateStatusPost model)
         {
-            _statusService.Add(model.Status, model.ChangeDate, TimeSpan.FromSeconds(model.LastStatusDuration));
-            return NoContent();
+            var createdObj = _statusService.Add(model.Status, model.ChangeDate, TimeSpan.FromSeconds(model.LastStatusDuration));
+            return Created($"/api/status/{createdObj.Id}", createdObj);
         }
 
         [HttpGet]
