@@ -4,13 +4,18 @@ from pyA20.gpio import gpio
 from datetime import datetime
 from time import sleep
 
-import httplib
-
+import json
 
 # config
-inputPort = port.PE11
-reportServerAddress = ''
+inputPort = port.PA11
+reportServerAddress = 'http://chcesiku.pl/api/status'
 # end config
+
+import urllib2
+def http_post(url, header, data):
+    req = urllib2.Request(url, data, headers=header)
+    response = urllib2.urlopen(req)
+    return response
 
 
 class WCStateManager:
@@ -38,14 +43,12 @@ class WCStateManager:
     def sendState(self, diff):
         data = {'ChangeDate': self.lastStateChange.isoformat(), 'Status': self.getStateName(), 'LastStatusDuration': diff.seconds}
         headers = {'Content-type': 'application/json'}
-        conn = httplib.HTTPSConnection(self.reportServer)
-        conn.request('POST', '', data, headers)
-        response = conn.getresponse()
-        while response.status != 200:
-            sleep(2)
-            print('Status send failed retrying')
-            response = conn.getresponse()
-        print('Status send successful')
+
+        response = http_post(self.reportServer, headers, json.dumps(data))
+
+        # TODO: Add exceptions handling, and retries
+        d = response.read()
+        print('status= %s.data=%s' % (response.code, d))
 
 
 gpio.init()
