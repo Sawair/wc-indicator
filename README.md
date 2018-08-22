@@ -7,7 +7,7 @@ Projects aim is to create online indicator where you could observe if the Toilet
 
 To install this in your office you will need:
   - Orange Pi
-  - Magnetic Meter  #todo: @sawair
+  - Magnetic Meter HO-03N
   - internet connection to central server which will be deployed
   - some host for aspnet core
 
@@ -31,4 +31,4 @@ dotnet publish ./wcindicator.api.csproj /p:PublishProfile=Prod
 ## Agents/Sensors
 
 
-**wcindicator.agent** is the project you have to deploy to the orange pi device and run `python run.py` file.
+**wcindicator.agent** is the project you have to deploy to the orange pi device and run `sudo python run.py` file.
