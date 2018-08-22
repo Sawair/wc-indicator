@@ -28,7 +28,23 @@ dotnet publish ./wcindicator.api.csproj /p:PublishProfile=Prod
 ```
 
 
-## Agents/Sensors
+## Agents
 
 
-**wcindicator.agent** is the project you have to deploy to the orange pi device and run `sudo python run.py` file.
+**wcindicator.agent** is the project you have to deploy to the orange pi device.
+Agent need's to have [orangepi_PC_gpio_pyH3](https://github.com/duxingkei33/orangepi_PC_gpio_pyH3) installed on device, project is added as submodule in **wcindicator.agent/gpio**. To first run use below commands
+```
+python setup.py install 
+sudo python run.py
+```
+Every next time run `sudo python run.py`
+Also we recomend adding cron entry using command `sudo crontab -e`, and in editor add line:
+```
+@reboot /usr/bin/python /{project-dir}/wcindicator.agent/run.py
+```
+
+
+## Sensors
+
+Connection scheme you can find in [Scheme.png](https://github.com/Sawair/wc-indicator/blob/master/Scheme.png).
+Outputs X1 and X2 are for Magnetic Meter.
