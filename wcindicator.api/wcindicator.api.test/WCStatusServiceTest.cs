@@ -1,5 +1,7 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,19 @@ namespace wcindicator.api.test
                .Options;
             return new WCIndicatorContext(options);
         }
+
+        [Fact(Skip = "Nie bedziemy za kazdym razem wysylac powiadomien do ms flow")]
+        public void MSFlowIntegrationWorking()
+        {
+            var createdObj = new StatusReport() { Id = 0, ReportTime = DateTime.Now, Status = StatusEnum.Free, StatusDuration = TimeSpan.FromDays(1) };
+            var client = new RestClient("https://prod-28.westeurope.logic.azure.com:443/workflows/8dc2d212ad544ee189458624dcbddf96/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_GtQEdrIOrJHEwX73HF-nw4L4LeFsO4WeWmlj16-hDQ");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            request.AddHeader("content-type", "application/json");
+            request.AddParameter("application/json", JsonConvert.SerializeObject(createdObj), ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+        }
+
 
         [Fact]
         public void GivenEmptyDatabase_WhenGettingLastReport_ShouldGetTheDefaultOne()
