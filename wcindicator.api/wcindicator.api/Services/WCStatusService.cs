@@ -48,4 +48,35 @@ namespace wcindicator.api.Services
             return _db.SaveChanges();
         }
     }
+
+    public class WCStatusServiceStub : IWCStatusService
+    {
+        private StatusReport report = new StatusReport();
+
+        public StatusReport Add(StatusEnum status, DateTime changeDate, TimeSpan statusDuration)
+        {
+            report = new StatusReport()
+            {
+                ReportTime = changeDate,
+                Status = status,
+                StatusDuration = statusDuration
+            };
+            return report;
+        }
+
+        public StatusEnum GetCurrentWCStatus()
+        {
+            return report.Status;
+        }
+
+        public StatusReport GetLastReport()
+        {
+            return report;
+        }
+
+        public int SaveChanges()
+        {
+            return 1;
+        }
+    }
 }
