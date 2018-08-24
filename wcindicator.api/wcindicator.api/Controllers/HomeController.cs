@@ -23,6 +23,8 @@ namespace wcindicator.api.Controllers
             var vm = new IndexPageViewModel();
             vm.StatusString = _statusService.GetCurrentWCStatus().ToString();
             vm.Updated = _statusService.GetLastReport().ReportTime.ToString();
+            vm.Heartbeat = StatusController.HeartbeatTime;
+            vm.HeartbeatTimeSpan = DateTime.Now - StatusController.HeartbeatTime;
             return View(vm);
         }
 
