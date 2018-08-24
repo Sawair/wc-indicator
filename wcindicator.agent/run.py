@@ -78,5 +78,5 @@ while True:
         manager.setWCState(1)
     else:
         manager.setWCState(0)
-
+    sleep(1)
 
