@@ -2,18 +2,6 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<style>
-    body{
-        @if(Model.StatusString == "Occupied")
-        {
-            @: background-color:red;
-        }
-        else
-        {
-            @: background-color:green;
-        }
-    }
-</style>
 
 <script>
     window.setTimeout(reload, 10000);
@@ -35,20 +23,30 @@
     <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
         <header class="masthead mb-auto">
             <div class="inner">
-                <h3 class="masthead-brand">Cover</h3>
+                <h3 class="masthead-brand">WC</h3>
                 <nav class="nav nav-masthead justify-content-center">
-                    <a class="nav-link active" href="#">Home</a>
-                    <a class="nav-link" href="#">Features</a>
-                    <a class="nav-link" href="#">Contact</a>
+                    <a class="nav-link active" href="#">Status</a>
                 </nav>
             </div>
         </header>
 
         <main role="main" class="inner cover">
-            <h1 class="cover-heading">Cover your page.</h1>
-            <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
+            <h1 class="cover-heading">RoyalOffice</h1>
+            <p class="lead">Dzieki tej stronie obywatele RoyalOffice wiedzą jaki status ma ich toaleta</p>
             <p class="lead">
-                <a href="#" class="btn btn-lg btn-secondary">Learn more</a>
+
+                @if (Model.HeartbeatTimeSpan > TimeSpan.FromSeconds(30))
+                {
+                    <a href="/" class="btn btn-lg btn-info">Unknown</a>
+                }
+                else if (Model.Status == StatusEnum.Free)
+                {
+                    <a href="/" class="btn btn-lg btn-success">@Model.StatusString</a>
+                }
+                else if (Model.Status == StatusEnum.Occupied)
+                {
+                    <a href="/" class="btn btn-lg btn-danger">@Model.StatusString</a>
+                }
             </p>
         </main>
     </div>

@@ -9,5 +9,6 @@ namespace wcindicator.api.Models
         public string Updated { get; internal set; }
         public DateTime Heartbeat { get; internal set; }
         public TimeSpan HeartbeatTimeSpan { get; internal set; }
+        public StatusEnum Status { get; internal set; }
     }
 }
