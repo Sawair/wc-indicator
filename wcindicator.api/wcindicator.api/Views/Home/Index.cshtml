@@ -37,7 +37,7 @@
 
                 @if (Model.HeartbeatTimeSpan > TimeSpan.FromSeconds(30))
                 {
-                    <a href="/" class="btn btn-lg btn-info">Unknown</a>
+                    <a href="/" class="btn btn-lg btn-info">@Model.StatusString</a>
                 }
                 else if (Model.Status == StatusEnum.Free)
                 {
