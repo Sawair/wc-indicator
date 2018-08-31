@@ -4,20 +4,7 @@
 }
 
 <script>
-    window.setTimeout(reload, 10000);
-
-    function reload() {
-        $.ajax({
-            type: 'GET',
-            url: '/',
-            success: function (response) {
-                // re-writes the entire document
-                var newDoc = document.open("text/html", "replace");
-                newDoc.write(response);
-                newDoc.close();
-            }
-        });
-    }
+    window.setTimeout(function () { window.location.reload();}, 3000);
 </script>
 <div class="text-center">
     <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
