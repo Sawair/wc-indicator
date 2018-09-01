@@ -48,18 +48,25 @@ class WCStateManager:
     def sendState(self, diff):
         data = {'ChangeDate': self.lastStateChange.isoformat(), 'Status': self.getStateName(), 'LastStatusDuration': diff.seconds}
         headers = {'Content-type': 'application/json'}
+        isSent = False
+        while not isSent:
+            try:
+                response = http_post(self.reportServer, headers, json.dumps(data))
+                d = response.read()
+                print('status= %s.data=%s' % (response.code, d))
+                isSent = True
+            except:
+                print('Sending data failed, retrying')
 
-        response = http_post(self.reportServer, headers, json.dumps(data))
-
-        # TODO: Add exceptions handling, and retries
-        d = response.read()
-        print('status= %s.data=%s' % (response.code, d))
 
 
 def startHeartbeat(interval, reportServer):
     while True:
-        response = http_post(reportServer,{},'')
-        print('Heartbeat status= %s' % response.code)
+        try:
+            response = http_post(reportServer,{},'')
+            print('Heartbeat status= %s' % response.code)
+        except:
+            print('Heartbeat failed, retry in: %s' % interval)
         time.sleep(interval)
 
 
