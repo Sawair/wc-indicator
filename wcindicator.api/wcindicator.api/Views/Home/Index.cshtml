@@ -2,36 +2,39 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<style>
-    body{
-        @if(Model.StatusString == "Occupied")
-        {
-            @: background-color:red;
-        }
-        else
-        {
-            @: background-color:green;
-        }
-    }
-</style>
 
 <script>
-    window.setTimeout(function () {
-        $.ajax({
-            type: 'GET',
-            url: '/',
-            success: function (response) {
-                // re-writes the entire document
-                var newDoc = document.open("text/html", "replace");
-                newDoc.write(response);
-                newDoc.close();
-            }
-        });
-    }, 5000);
+    window.setTimeout(function () { window.location.reload();}, 3000);
 </script>
-<div class="row justify-content-md-center">
-    <div class="col col-12">
-        <h2>RoyalOffice WC Indicator</h2>
-        Current Status: @Model.StatusString Updated: @Model.Updated
+<div class="text-center">
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+        <header class="masthead mb-auto">
+            <div class="inner">
+                <h3 class="masthead-brand">WC</h3>
+                <nav class="nav nav-masthead justify-content-center">
+                    <a class="nav-link active" href="#">Status</a>
+                </nav>
+            </div>
+        </header>
+
+        <main role="main" class="inner cover">
+            <h1 class="cover-heading">RoyalOffice</h1>
+            <p class="lead">Dzieki tej stronie obywatele RoyalOffice wiedzą jaki status ma ich toaleta</p>
+            <p class="lead">
+
+                @if (Model.HeartbeatTimeSpan > TimeSpan.FromSeconds(30))
+                {
+                    <a href="/" class="btn btn-lg btn-info">@Model.StatusString</a>
+                }
+                else if (Model.Status == StatusEnum.Free)
+                {
+                    <a href="/" class="btn btn-lg btn-success">@Model.StatusString</a>
+                }
+                else if (Model.Status == StatusEnum.Occupied)
+                {
+                    <a href="/" class="btn btn-lg btn-danger">@Model.StatusString</a>
+                }
+            </p>
+        </main>
     </div>
 </div>
