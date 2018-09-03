@@ -21,8 +21,12 @@ namespace wcindicator.api.Controllers
         public IActionResult Index()
         {
             var vm = new IndexPageViewModel();
-            vm.StatusString = _statusService.GetCurrentWCStatus().ToString();
+            var status = _statusService.GetCurrentWCStatus();
+            vm.StatusString = status.ToString();
             vm.Updated = _statusService.GetLastReport().ReportTime.ToString();
+            vm.Heartbeat = StatusController.HeartbeatTime;
+            vm.HeartbeatTimeSpan = DateTime.Now - StatusController.HeartbeatTime;
+            vm.Status = status;
             return View(vm);
         }
 

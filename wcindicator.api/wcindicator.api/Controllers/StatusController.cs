@@ -16,6 +16,7 @@ namespace wcindicator.api.Controllers
     {
         private readonly IWCStatusService _statusService;
         private readonly ILogger<StatusController> _logger;
+        public static DateTime HeartbeatTime = DateTime.MinValue;
 
         public StatusController(IWCStatusService statusService, ILogger<StatusController> logger)
         {
@@ -60,6 +61,15 @@ namespace wcindicator.api.Controllers
         public IActionResult GetLastReport()
         {
             return Ok(_statusService.GetLastReport());
+        }
+
+        [HttpPost]
+        [Route("/api/heartbeat")]
+        [ProducesResponseType(204)]
+        public IActionResult Heartbeat()
+        {
+            HeartbeatTime = DateTime.Now;
+            return NoContent();
         }
     }
 
