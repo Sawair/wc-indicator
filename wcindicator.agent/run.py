@@ -1,14 +1,19 @@
 from pyA20.gpio import port
 from pyA20.gpio import gpio
 
+from threading import Thread
 from datetime import datetime
 from time import sleep
 
 import json
+import time
 
 # config
 inputPort = port.PA11
-reportServerAddress = 'http://chcesiku.pl/api/status'
+reportServerAddress = 'http://chcesiku.pl'
+statusEndPoint = '/api/status'
+heartbeatEndPoint = '/api/heartbeat'
+interval = 10
 # end config
 
 import urllib2
@@ -43,12 +48,26 @@ class WCStateManager:
     def sendState(self, diff):
         data = {'ChangeDate': self.lastStateChange.isoformat(), 'Status': self.getStateName(), 'LastStatusDuration': diff.seconds}
         headers = {'Content-type': 'application/json'}
+        isSent = False
+        while not isSent:
+            try:
+                response = http_post(self.reportServer, headers, json.dumps(data))
+                d = response.read()
+                print('status= %s.data=%s' % (response.code, d))
+                isSent = True
+            except:
+                print('Sending data failed, retrying')
 
-        response = http_post(self.reportServer, headers, json.dumps(data))
 
-        # TODO: Add exceptions handling, and retries
-        d = response.read()
-        print('status= %s.data=%s' % (response.code, d))
+
+def startHeartbeat(interval, reportServer):
+    while True:
+        try:
+            response = http_post(reportServer,{},'')
+            print('Heartbeat status= %s' % response.code)
+        except:
+            print('Heartbeat failed, retry in: %s' % interval)
+        time.sleep(interval)
 
 
 gpio.init()
@@ -56,12 +75,15 @@ gpio.setcfg(inputPort, gpio.INPUT)
 gpio.pullup(inputPort, 0)
 gpio.pullup(inputPort, gpio.PULLDOWN)
 
-manager = WCStateManager(reportServerAddress)
+manager = WCStateManager(reportServerAddress+statusEndPoint)
+
+t = Thread(target=startHeartbeat, args=(interval, reportServerAddress+heartbeatEndPoint))
+t.start()
 
 while True:
     if gpio.input(inputPort) == 1:
         manager.setWCState(1)
     else:
         manager.setWCState(0)
-
+    sleep(1)
 
